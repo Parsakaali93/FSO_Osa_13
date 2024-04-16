@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "author": "Audrey Anchor",
+    "url": "www.testblog.com",
+    "title": "Testing for Dummies"
+}
