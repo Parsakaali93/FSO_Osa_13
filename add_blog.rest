@@ -4,5 +4,4 @@ content-type: application/json
 {
     "author": "Audrey Anchor",
     "url": "www.testblog.com",
-    "title": "Testing for Dummies"
 }
