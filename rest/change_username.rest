@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/users/Mimmu
+content-type: application/json
+
+{
+    "username": "Skimmu"
+}
