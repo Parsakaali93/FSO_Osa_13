@@ -15,12 +15,12 @@ router.get('/', async (req, res) => {
 })
 
 // Create user
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const user = await User.create(req.body)
     res.json(user)
   } catch(error) {
-    return res.status(400).json({ error })
+    next(error)
   }
 })
 
@@ -35,5 +35,13 @@ router.put('/:username', async (req, res) => {
     res.status(404).end()
   }
 })
+
+function errorHandler(err, req, res, next) {
+  console.log("Error handler")
+  err.errors.map(e => console.log(e.message))
+  res.status(400).json({ error: err.errors[0].message });
+}
+
+router.use(errorHandler);
 
 module.exports = router

@@ -1,7 +1,9 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNraW1tdSIsImlkIjoxLCJpYXQiOjE3MTM2MDQzMzN9.pP-p6PSbWHrtwYSM3PUygCSwb-Y4iIYC0CIBBeZq2fU
 
 {
-    "author": "Audrey Anchor",
-    "url": "www.testblog.com",
+    "author": "Aku Ankka 2",
+    "url": "www.ankkablog.com",
+    "title": "Ankka Blog 2"
 }
