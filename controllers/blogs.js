@@ -3,17 +3,37 @@ const router = require('express').Router()
 const { Blog, User } = require('../models')
 const { SECRET } = require('../util/config')
 const jwt = require('jsonwebtoken')
+const { Op } = require('sequelize')
 
 router.get('/', async (req, res, next) => {
+    const where = {}
+
     try{
-    const blogs = await Blog.findAll()
-    console.log(JSON.stringify(blogs, null, 2))
-    res.json(blogs)
-    }
-    catch(error)
-    {
-        next(error)
-    }
+      if (req.query.search) {
+        where[Op.or] = [
+          {
+          title: {
+            [Op.iLike]: `%${req.query.search}%`
+          }},
+
+          {author: {
+            [Op.iLike]: `%${req.query.search}%`
+          }}
+        ]}
+      
+
+      const blogs = await Blog.findAll(
+      {
+        where
+      })
+
+      console.log(JSON.stringify(blogs, null, 2))
+      res.json(blogs)
+      }
+      catch(error)
+      {
+          next(error)
+      }
 })
 
 const tokenExtractor = (req, res, next) => {
@@ -50,9 +70,14 @@ router.post('/', tokenExtractor, async (req, res, next) => {
 
   })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', tokenExtractor, async (req, res, next) => {
     try{
+        const user = await User.findByPk(req.decodedToken.id)
+       
+        console.log("Delete blog")
         const blog = await Blog.findByPk(req.params.id)
+        if(user.id != blog.userId)
+          return res.status(400).json({ error: 'Cannot delete a blog you did not create' })
         await blog.destroy()
         res.json({message: 'Blog Deleted!'})
     }
