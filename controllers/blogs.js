@@ -21,10 +21,14 @@ router.get('/', async (req, res, next) => {
           }}
         ]}
       
+        console.log("where", where)
 
       const blogs = await Blog.findAll(
       {
-        where
+        where,
+        order: [
+          ['likes', 'DESC']
+        ]
       })
 
       console.log(JSON.stringify(blogs, null, 2))
@@ -60,6 +64,11 @@ router.post('/', tokenExtractor, async (req, res, next) => {
     try {
       const user = await User.findByPk(req.decodedToken.id)
       console.log(req.body)
+
+      const currentYear = new Date().getFullYear();
+      if(req.body.year < 1991 || req.body.year > currentYear)
+        return res.status(400).json({error: 'Year must be between 1991 and current year'})
+
       const blog = await Blog.create({...req.body, userId: user.id})
       return res.json(blog)
     } 
@@ -104,7 +113,7 @@ router.put('/:id', async (req, res, next) => {
   function errorHandler(err, req, res, next) {
     console.log("Error handler")
     console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: err.message });
   }
   
 router.use(errorHandler);
