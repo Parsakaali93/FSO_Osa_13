@@ -14,6 +14,33 @@ router.get('/', async (req, res) => {
   res.json(users)
 })
 
+// Get single user
+router.get('/:id', async (req, res) => {
+  const users = await User.findByPk(req.params.id, {
+    include: [
+    {
+        model: Blog,
+        attributes: { exclude: ['userId'] }
+    },
+
+    {
+      model: Blog,
+      as: 'reading_list',
+      attributes: { exclude: ['userId']},
+      through: {
+        attributes: []
+      },
+      // include: {
+      //   model: User,
+      //   attributes: ['name']
+      // }
+    },
+  ]
+  })
+
+  res.json(users)
+})
+
 // Create user
 router.post('/', async (req, res, next) => {
   try {

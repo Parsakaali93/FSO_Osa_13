@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBla2thQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3MTQxMzU5NDd9.y-XaSV1F-FgJrPJPu9pnxSX33EnJ0TbHjOTfxwqNImQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbW11QGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE3MTQzMDg3NjZ9.f3760Hi3zJtGArGhsWz5nUXCpvmGzF2G8LRIDrHg-Uo
 
 {
-    "author": "Paavo Pesuska",
-    "url": "www.pesublogi.com",
-    "title": "Pesublogi",
-    "year": 1996
+    "author": "Tarja Halo",
+    "url": "www.president.com",
+    "title": "Presidenttiblogi",
+    "year": 2001
 }
