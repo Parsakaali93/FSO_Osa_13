@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { User, Blog } = require('../models')
+const { User, Blog, UserBlogs } = require('../models')
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -28,12 +28,10 @@ router.get('/:id', async (req, res) => {
       as: 'reading_list',
       attributes: { exclude: ['userId']},
       through: {
-        attributes: []
-      },
-      // include: {
-      //   model: User,
-      //   attributes: ['name']
-      // }
+        model: UserBlogs, // Include the junction model
+        attributes: ['read', 'id'], // Select the read attribute from the junction table
+        where: { userId: req.params.id }
+      }
     },
   ]
   })
