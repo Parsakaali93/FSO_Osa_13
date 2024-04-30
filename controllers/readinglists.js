@@ -1,8 +1,9 @@
 const router = require('express').Router()
 
-const { UserBlogs } = require('../models')
+const { UserBlogs, User } = require('../models')
+const { SECRET } = require('../util/config')
+const jwt = require('jsonwebtoken')
 
-// Get all users
 router.post('/', async (req, res) => {
     try{
         const userId = req.body.userId
@@ -21,6 +22,54 @@ router.post('/', async (req, res) => {
     {
         res.status(500).json({error: error.message})
     }
+})
+
+const tokenExtractor = (req, res, next) => {
+    console.log("Token extractor middleware")
+    const authorization = req.get('authorization')
+    console.log(authorization)
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+      try {
+        req.decodedToken = jwt.verify(authorization.substring(7), SECRET)
+      } 
+      
+      catch
+      {
+        return res.status(401).json({ error: 'token invalid' })
+      }
+    }
+    else {
+      return res.status(401).json({ error: 'token missing' })
+    }
+    next()
+  }
+
+// Update blog in readinglist's read status
+router.put('/:id', tokenExtractor, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.decodedToken.id)
+        
+        if (user) {
+          const reading_list = await UserBlogs.findByPk(req.params.id)
+
+          console.log(reading_list.userId, user.id)
+
+          if(reading_list.userId != user.id)
+            return res.status(400).json({error: "You are not authorized to change this user's reading list"})
+
+          reading_list.read = req.body.read
+          await reading_list.save()
+          return res.status(200).json({status: "Read status of blog successfully changed"})
+        } 
+
+        else {
+            return res.status(404).end()
+        }
+      } 
+      
+      catch(error) {
+        console.log({error})
+      }
 })
 
 module.exports = router

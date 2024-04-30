@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
       attributes: { exclude: ['userId']},
       through: {
         model: UserBlogs, // Include the junction model
-        attributes: ['read', 'id'], // Select the read attribute from the junction table
+        attributes: ['read', 'id', 'userId'], // Select the read attribute from the junction table
         where: { userId: req.params.id }
       }
     },
