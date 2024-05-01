@@ -16,7 +16,18 @@ router.get('/', async (req, res) => {
 
 // Get single user
 router.get('/:id', async (req, res) => {
+  const where = {}
+
+  if (req.query.read) 
+  {
+    if(req.query.read === "true" || req.query.read === "false")
+        where.read = req.query.read === "true"
+  }
+
+  where.userId = req.params.id
+  
   const users = await User.findByPk(req.params.id, {
+  
     include: [
     {
         model: Blog,
@@ -30,7 +41,7 @@ router.get('/:id', async (req, res) => {
       through: {
         model: UserBlogs, // Include the junction model
         attributes: ['read', 'id', 'userId'], // Select the read attribute from the junction table
-        where: { userId: req.params.id }
+        where
       }
     },
   ]
