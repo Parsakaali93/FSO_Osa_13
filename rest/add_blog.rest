@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBla2thQGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE3MTQzOTkyNDN9.9HlVD6lFGS3SQDIFKGEDL_iOffe8LEcl2iRHdtXU_qU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBla2thQGdtYWlsLmNvbSIsImlkIjoyLCJpYXQiOjE3MTQ4NTM3NzV9.agkQgfEyPdzy0XJ8GzjO-Y-ND8-PHjq3LspFdq4Dxg8
 
 {
-    "author": "Miimu",
-    "url": "asdasd.com",
-    "title": "456 blgi",
-    "year": 2002
+    "author": "Pekka Pouta",
+    "url": "weather.com",
+    "title": "How to predict weather",
+    "year": 2013
 }

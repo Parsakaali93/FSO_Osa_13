@@ -1,0 +1,6 @@
+PUT http://localhost:3001/api/users/disable/3
+content-type: application/json
+
+{
+    "disabled": true
+}

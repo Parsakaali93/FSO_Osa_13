@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const { User, Blog, UserBlogs } = require('../models')
+const Session = require('../models/session')
 
 // Get all users
 router.get('/', async (req, res) => {
@@ -62,6 +63,8 @@ router.post('/', async (req, res, next) => {
 
 // Change username
 router.put('/:username', async (req, res) => {
+  console.log("Change username route")
+
   const user = await User.findOne({username: req.params.username})
   if (user) {
     user.username = req.body.username
@@ -70,6 +73,28 @@ router.put('/:username', async (req, res) => {
   } else {
     res.status(404).end()
   }
+})
+
+// Disable user
+router.put('/disable/:id', async (req, res) => {
+    try{
+      console.log("Disable user route", req.params.id)
+      const user = await User.findByPk(req.params.id)
+      if (user) {
+        user.disabled = req.body.disabled
+        await user.save()
+
+        const session = await Session.findOne({ where: { userId: user.id } })
+        await session.destroy()
+
+        res.json(user)
+      } else {
+        res.status(404).end()
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
 })
 
 function errorHandler(err, req, res, next) {
